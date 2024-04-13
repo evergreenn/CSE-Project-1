@@ -35,11 +35,11 @@ public class Main {
         int userInput;
 
         do {
-            System.out.println("1. File Integrity Check");
-            System.out.println("2. Date Input");
-            System.out.println("3. Schedule Management");
+            System.out.println("1. 파일 무결성 체크");
+            System.out.println("2. 날짜 추가");
+            System.out.println("3. 스케쥴 관리");
             System.out.println("4. Exit");
-            System.out.print("Enter your choice: ");
+            System.out.print("번호를 입력하세요 : ");
             userInput = scanner.nextInt();
 
             switch (userInput) {
@@ -53,10 +53,10 @@ public class Main {
                     manageSchedule(scanner);
                     break;
                 case 4:
-                    System.out.println("Exiting the program...");
+                    System.out.println("프로그램을 종료합니다...");
                     break;
                 default:
-                    System.out.println("Invalid choice, please try again.");
+                    System.out.println("옳지않는 입력값입니다. 다시 입력해주세요.");
             }
         } while (userInput != 4);
 
@@ -64,12 +64,12 @@ public class Main {
     }
 
     private static void performFileIntegrityCheck() {
-        System.out.println("Performing File Integrity Check...");
+        System.out.println("파일 무결성 체크 기능");
         // Implement file integrity check functionality
     }
 
     private static void inputDate() {
-        System.out.println("Date Input Menu: (To be implemented)");
+        System.out.println("날짜추가 메뉴: (To be implemented)");
         // Implement date input functionality
     }
 
@@ -77,11 +77,11 @@ public class Main {
         int subMenuChoice;
 
         do {
-            System.out.println("Schedule Management Menu:");
-            System.out.println("1. Add Schedule");
-            System.out.println("2. Delete Schedule");
-            System.out.println("3. Main Menu");
-            System.out.print("Enter your choice: ");
+            System.out.println("스케쥴 관리 메뉴:");
+            System.out.println("1. 스케쥴 추가");
+            System.out.println("2. 스케쥴 삭제");
+            System.out.println("3. 메인 메뉴로 가기");
+            System.out.print("실행할 메뉴를 입력하세요 : ");
             subMenuChoice = scanner.nextInt();
             //개행문자 제거(nextInt)는 개행문자를 읽어오지 않음.
             scanner.nextLine();
@@ -95,7 +95,7 @@ public class Main {
                     deleteSchedule(scanner);
                     break;
                 case 3:
-                    System.out.println("Returning to Main Menu...");
+                    System.out.println("매인메뉴로 다시 돌아갑니다...");
                     break;
                 default:
                     System.out.println("Invalid choice, please try again.");
@@ -177,6 +177,7 @@ public class Main {
             e.printStackTrace();
         }
     }
+    // 해당 스케쥴이 존재하는지 확인하는 함수.
     private static boolean isDuplicateSchedule(List list, Object newSchedule) {
         for (Object obj : list) {
             if (obj instanceof Block && newSchedule instanceof Block) {
@@ -203,9 +204,92 @@ public class Main {
 
 
     private static void deleteSchedule(Scanner scanner) {
-        System.out.println("Delete Schedule Menu: (To be implemented)");
-        // Implement schedule deletion functionality
+        System.out.println("스케줄 삭제 기능을 시작합니다.");
+        System.out.print("삭제할 스케줄 유형을 입력하세요 (Block/Todo): ");
+        String scheduleType = scanner.nextLine();
+
+        if (scheduleType.equalsIgnoreCase("Block")) {
+            System.out.print("삭제할 스케줄 이름을 입력하세요: ");
+            String scheduleName = scanner.nextLine();
+            List<Block> matchedBlocks = new ArrayList<>();
+            int count = 0;
+
+            for (Block block : blockList) {
+                if (block.getScheduleName().equalsIgnoreCase(scheduleName)) {
+                    matchedBlocks.add(block);
+                    System.out.println(++count + ". " + block);
+                }
+            }
+
+            if (matchedBlocks.isEmpty()) {
+                System.out.println("해당 스케줄을 찾을 수 없습니다!");
+                return;
+            }
+
+            System.out.print("삭제할 스케줄 번호를 입력하세요: ");
+            int deleteIndex = scanner.nextInt();
+            scanner.nextLine(); // 버퍼 비우기
+
+            if (deleteIndex < 1 || deleteIndex > matchedBlocks.size()) {
+                System.out.println("유효하지 않은 스케줄 번호입니다!");
+                return;
+            }
+
+            Block toDelete = matchedBlocks.get(deleteIndex - 1);
+            System.out.print("다음 스케줄을 삭제하시겠습니까? (yes/no)\n" + toDelete + "\n선택: ");
+            String confirmation = scanner.nextLine();
+
+            if (confirmation.equalsIgnoreCase("yes")) {
+                blockList.remove(toDelete);
+                readAndSave(BlockFilepath,blockList);
+                System.out.println("스케줄이 성공적으로 삭제되었습니다!");
+            } else {
+                System.out.println("스케줄 삭제를 취소합니다.");
+            }
+        } else if (scheduleType.equalsIgnoreCase("Todo")) {
+            System.out.print("삭제할 스케줄 이름을 입력하세요: ");
+            String scheduleName = scanner.nextLine();
+            List<Todo> matchedTodos = new ArrayList<>();
+            int count = 0;
+
+            for (Todo todo : todoList) {
+                if (todo.getScheduleName().equalsIgnoreCase(scheduleName)) {
+                    matchedTodos.add(todo);
+                    System.out.println(++count + ". " + todo);
+                }
+            }
+
+            if (matchedTodos.isEmpty()) {
+                System.out.println("해당 스케줄을 찾을 수 없습니다!");
+                return;
+            }
+
+            System.out.print("삭제할 스케줄 번호를 입력하세요: ");
+            int deleteIndex = scanner.nextInt();
+            scanner.nextLine(); // 버퍼 비우기
+
+            if (deleteIndex < 1 || deleteIndex > matchedTodos.size()) {
+                System.out.println("유효하지 않은 스케줄 번호입니다!");
+                return;
+            }
+
+            Todo toDelete = matchedTodos.get(deleteIndex - 1);
+            System.out.print("다음 스케줄을 삭제하시겠습니까? (yes/no)\n" + toDelete + "\n선택: ");
+            String confirmation = scanner.nextLine();
+
+            if (confirmation.equalsIgnoreCase("yes")) {
+                todoList.remove(toDelete);
+                //삭제 완료후 txt 파일에 반영
+                readAndSave(TodoFilepath,todoList);
+                System.out.println("스케줄이 성공적으로 삭제되었습니다!");
+            } else {
+                System.out.println("스케줄 삭제를 취소합니다.");
+            }
+        } else {
+            System.out.println("유효하지 않은 스케줄 유형입니다! 'Block' 또는 'Todo'를 입력하세요.");
+        }
     }
+
     // txt 파일을 읽어서 저장하는 기능을 하는 함수입니다 !
     private static List readFileAndSaveToList(String fileName, String type) {
         List list = new ArrayList<>();
