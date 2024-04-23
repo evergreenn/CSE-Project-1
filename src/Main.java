@@ -20,14 +20,7 @@ public class Main {
         blockList = readFileAndSaveToList(BlockFilepath, "block");
          todoList = readFileAndSaveToList(TodoFilepath, "todo");
 
-        // 읽어온 데이터 확인
-        for (Block block : blockList) {
-            System.out.println(block);
-        }
 
-        for (Todo todo : todoList) {
-            System.out.println(todo);
-        }
 
         Scanner scanner = new Scanner(System.in);
 
@@ -36,7 +29,7 @@ public class Main {
 
         do {
             System.out.println("1. 파일 무결성 체크");
-            System.out.println("2. 날짜 추가");
+            System.out.println("2. 달력확인");
             System.out.println("3. 스케쥴 관리");
             System.out.println("4. Exit");
             System.out.print("번호를 입력하세요 : ");
@@ -47,7 +40,7 @@ public class Main {
                     performFileIntegrityCheck();
                     break;
                 case 2:
-                    inputDate();
+                    checkCalendar();
                     break;
                 case 3:
                     manageSchedule(scanner);
@@ -65,12 +58,51 @@ public class Main {
 
     private static void performFileIntegrityCheck() {
         System.out.println("파일 무결성 체크 기능");
-        // Implement file integrity check functionality
+        try {
+            blockList = readFileAndSaveToList(BlockFilepath, "block");
+            todoList = readFileAndSaveToList(TodoFilepath, "todo");
+            // 읽어온 데이터 확인
+            for (Block block : blockList) {
+                System.out.println(block);
+            }
+
+            for (Todo todo : todoList) {
+                System.out.println(todo);
+            }
+
+        } catch (Exception e) {
+            System.out.println("파일 입출력 상에 문제가 생겼습니다.");
+        }
+        System.out.println("파일이 정상적으로 불러와졌습니다.");
+
+
     }
 
-    private static void inputDate() {
-        System.out.println("날짜추가 메뉴: (To be implemented)");
-        // Implement date input functionality
+    private static void checkCalendar() {
+        System.out.println("달력확인");
+
+        System.out.println("Block 스케쥴:");
+        if (blockList.isEmpty()) {
+            System.out.println("저장된 Block 스케쥴이 없습니다.");
+        } else {
+            for (Block block : blockList) {
+                System.out.println(block.getScheduleName() + " | " +
+                        block.getStartDate() + " " + block.getStartTime() + " - " +
+                        block.getEndDate() + " " + block.getEndTime());
+            }
+        }
+
+        System.out.println("Todo 스케쥴:");
+        if (todoList.isEmpty()) {
+            System.out.println("저장된 Todo 스케쥴이 없습니다.");
+        } else {
+            for (Todo todo : todoList) {
+                System.out.println(todo.getScheduleName() + " | " + todo.getStartDate());
+            }
+        }
+
+
+        manageSchedule(new Scanner(System.in));
     }
 
     private static void manageSchedule(Scanner scanner) {
@@ -98,7 +130,7 @@ public class Main {
                     System.out.println("매인메뉴로 다시 돌아갑니다...");
                     break;
                 default:
-                    System.out.println("Invalid choice, please try again.");
+                    System.out.println("옳지않는 입력값입니다. 다시 입력해주세요.");
             }
         } while (subMenuChoice != 3);
     }
