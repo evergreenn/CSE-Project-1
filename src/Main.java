@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Main {
-    private static final String path = System.getProperty("user.dir") + "\\src\\";
+    private static final String path = System.getProperty("user.dir") + "\\";
     private static final String BlockFilepath = path + "BlockList.txt";
     private static final String TodoFilepath = path + "TodoList.txt";
 
@@ -88,7 +88,7 @@ public class Main {
 
     // 들어온 date의 범위에 포함되는 스케줄을 출력하는 함수
     private static void printDate(String date) {
-        clearConsole();
+//        clearConsole();
         int year = Integer.parseInt(date.substring(0, 2)) + 2000;
         int month = Integer.parseInt(date.substring(2, 4));
         int day = Integer.parseInt(date.substring(4));
@@ -128,7 +128,7 @@ public class Main {
     // 메인 메뉴2의 스케줄 관리 메뉴 구현 함수
     private static void manageSchedule(Scanner scanner, Console console) {
         String subMenuChoice;
-        clearConsole();
+//        clearConsole();
         System.out.println("스케쥴 관리 메뉴:");
         System.out.println("1. 스케쥴 추가");
         System.out.println("2. 스케쥴 삭제");
