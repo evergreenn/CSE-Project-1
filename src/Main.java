@@ -173,11 +173,15 @@ public class Main {
         if (scheduleType.equals("1") ) {
             Block block = new Block();
             System.out.println("Block스케줄 입니다.");
+            do{
+                System.out.print("스케줄 이름을 입력하세요: ");
+                name = console.readLine();
+                block.setScheduleName(name);
+                System.out.println(name);
 
-            System.out.print("스케줄 이름을 입력하세요: ");
-            name = console.readLine();
-            block.setScheduleName(name);
-            System.out.println(name);
+            }while (!isValidName(name));
+
+
             clearConsole();
             do {
                 System.out.println("스케줄 이름:" + name);
@@ -407,6 +411,20 @@ public class Main {
             }
         }
         return false;
+    }
+    public static boolean isValidName(String name) {
+        if (name == null || name.trim().isEmpty()) {
+            return false;
+        }
+
+        // 이름에 공백 또는 영어가 포함되어 있는지 확인
+        for (char c : name.toCharArray()) {
+            if (Character.isWhitespace(c) || Character.isLetter(c)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
 
