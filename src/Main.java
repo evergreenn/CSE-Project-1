@@ -426,12 +426,14 @@ public class Main {
     }
     public static boolean isValidName(String name) {
         if (name == null || name.trim().isEmpty()) {
+            System.out.println("널입니다.");
             return false;
         }
 
-        // 이름에 공백 또는 영어가 포함되어 있는지 확인
+        // 이름에 영어가 포함되어 있는지 확인
         for (char c : name.toCharArray()) {
-            if (Character.isWhitespace(c) || Character.isLetter(c)) {
+            if (!Character.isWhitespace(c) && !Character.isLetter(c)) {
+                System.out.println(c + "는 올바른 문자가 아닙니다.");
                 return false;
             }
         }
