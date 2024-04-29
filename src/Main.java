@@ -288,8 +288,15 @@ public class Main {
             }
 
             System.out.print("삭제할 스케줄 번호를 입력하세요: ");
-            int deleteIndex = scanner.nextInt();
-            scanner.nextLine(); // 버퍼 비우기
+            String deleteInput = scanner.nextLine();
+
+            if (!isNumeric(deleteInput)) {
+                System.out.println("숫자를 입력해주세요.");
+                return;
+            }
+           int  deleteIndex=Integer.valueOf(deleteInput);
+
+
 
             if (deleteIndex < 1 || deleteIndex > matchedBlocks.size()) {
                 System.out.println("유효하지 않은 스케줄 번호입니다!");
@@ -333,8 +340,13 @@ public class Main {
             }
 
             System.out.print("삭제할 스케줄 번호를 입력하세요: ");
-            int deleteIndex = scanner.nextInt();
-            scanner.nextLine(); // 버퍼 비우기
+            String deleteInput = scanner.nextLine();
+
+            if (!isNumeric(deleteInput)) {
+                System.out.println("숫자를 입력해주세요.");
+                return;
+            }
+            int  deleteIndex=Integer.valueOf(deleteInput);
 
             if (deleteIndex < 1 || deleteIndex > matchedTodos.size()) {
                 System.out.println("유효하지 않은 스케줄 번호입니다!");
@@ -424,6 +436,18 @@ public class Main {
             }
         }
 
+        return true;
+    }
+
+    public static boolean isNumeric(String str) {
+        if (str == null) {
+            return false;
+        }
+        try {
+            double d = Double.parseDouble(str);
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
         return true;
     }
 
